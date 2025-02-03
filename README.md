@@ -4,7 +4,7 @@
 
 Counterpoint is a sleek, dark-themed word counting application designed to help writers track their writing progress with ease and style. Built with Vue.js and TypeScript, it offers a clean, responsive interface for monitoring word count and setting writing goals.
 
-![Counterpoint Word Counter App](public/Counterpoint_WebApp.png)
+![Counterpoint Word Counter App](wordcount-app/public/Counterpoint_WebApp.png)
 
 ## 🌟 Features
 
