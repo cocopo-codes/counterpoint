@@ -13,12 +13,6 @@ Counterpoint is a sleek, dark-themed word counting application designed to help 
 - **Local Storage**: Save your progress in the browser
 - **Backup Functionality**: Download your word count data
 - **Responsive Design**: Works on desktop and mobile
-- Real-time word count tracking
-- Customizable writing goal setting
-- Progress bar visualization
-- Dark mode design
-- Responsive layout
-- MIT Open Source License
 
 ## 🚀 Technologies
 
