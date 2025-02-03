@@ -30,10 +30,10 @@ const STORAGE_KEY = 'counterpoint-word-count'
 // Debounced save function to reduce localStorage writes
 const debouncedSave = debounce((data: any) => {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
-}, 500)
+}, 5000)
 
-// Function to save data to local storage and text file
-const saveData = () => {
+// Function to manually download backup
+const downloadBackup = () => {
   const data = {
     totalWordCount: totalWordCount.value,
     todayWordCount: todayWordCount.value,
@@ -41,10 +41,6 @@ const saveData = () => {
     date: format(new Date(), 'yyyy-MM-dd')
   }
 
-  // Debounced local storage save
-  debouncedSave(data)
-
-  // Create and download text file
   const dataStr = `Counterpoint Word Count Backup
 Date: ${data.date}
 Total Word Count: ${data.totalWordCount}
@@ -56,6 +52,20 @@ Word Count Goal: ${data.totalWordCountGoal || 'Not set'}`
   link.href = URL.createObjectURL(blob)
   link.download = `counterpoint_wordcount_${data.date}.txt`
   link.click()
+}
+
+// Function to save data to local storage
+const saveData = () => {
+  const data = {
+    totalWordCount: totalWordCount.value,
+    todayWordCount: todayWordCount.value,
+    totalWordCountGoal: totalWordCountGoal.value,
+    date: format(new Date(), 'yyyy-MM-dd'),
+    lastUpdated: new Date().toISOString()
+  }
+
+  // Debounced local storage save
+  debouncedSave(data)
 }
 
 // Improved goal setting with validation
@@ -134,10 +144,14 @@ const loadData = () => {
     const parsedData = JSON.parse(savedData)
     const savedDate = parsedData.date || format(new Date(), 'yyyy-MM-dd')
     const today = format(new Date(), 'yyyy-MM-dd')
+    const lastUpdated = parsedData.lastUpdated ? new Date(parsedData.lastUpdated) : new Date()
 
-    // Reset today's word count if it's a new day
+    // Determine if it's a new day or data is from yesterday
+    const isNewDay = savedDate !== today
+    const isYesterday = format(lastUpdated, 'yyyy-MM-dd') === format(new Date(Date.now() - 86400000), 'yyyy-MM-dd')
+
     totalWordCount.value = parsedData.totalWordCount || 0
-    todayWordCount.value = savedDate === today ? (parsedData.todayWordCount || 0) : 0
+    todayWordCount.value = isNewDay ? 0 : (parsedData.todayWordCount || 0)
     totalWordCountGoal.value = parsedData.totalWordCountGoal || 0
   }
 }
@@ -214,7 +228,14 @@ watch([totalWordCount, todayWordCount, totalWordCountGoal], saveData)
     </div>
 
     <div class="session-warning">
-      <p>⚠️ Note: This app saves data only in your current browser session. Refreshing or closing the page will reset your progress.</p>
+      <p>⚠️ Your word count data is saved locally. It will persist across page refreshes and will reset at the start of a new day.</p>
+      <button 
+        @click="downloadBackup"
+        class="backup-button"
+        aria-label="Download backup"
+      >
+        Download Backup
+      </button>
     </div>
     
     <div class="input-section">
@@ -406,6 +427,10 @@ p {
   margin-bottom: 60px;
 }
 
+.backup-section {
+  margin-bottom: 20px;
+}
+
 .app-footer {
   margin-top: 0;
   padding: 10px 0;
@@ -468,13 +493,37 @@ p {
 .session-warning {
   background-color: #2a2a2a;
   color: #e0e0e0;
-  padding: 10px;
+  padding: 15px;
+  margin-bottom: 20px;
   border-radius: 8px;
-  margin: 20px 0;
-  font-size: 0.8em;
-  text-align: center;
-  border: 1px solid #4db8b8;
-  opacity: 0.9;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8em; /* Smaller overall font size */
+}
+
+.session-warning p {
+  margin: 0;
+  text-align: left;
+  flex-grow: 1;
+  padding-right: 15px;
+}
+
+.session-warning .backup-button {
+  margin-left: 10px;
+  background-color: #4db8b8;
+  color: #1a1a1a;
+  border: none;
+  padding: 4px 10px; /* Even smaller padding */
+  cursor: pointer;
+  border-radius: 5px;
+  font-family: 'IM Fell English', serif;
+  font-size: 0.9em; /* Slightly larger within the small context */
+  transition: background-color 0.3s ease;
+}
+
+.session-warning .backup-button:hover {
+  background-color: #3a9999;
 }
 
 .goal-error {

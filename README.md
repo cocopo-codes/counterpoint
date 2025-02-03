@@ -10,8 +10,10 @@ Counterpoint is a sleek, dark-themed word counting application designed to help 
 
 - **Real-time Word Counting**: Track your writing progress instantly
 - **Goal Setting**: Set and monitor your writing goals
-- **Local Storage**: Save your progress in the browser
-- **Backup Functionality**: Download your word count data
+- **Local Storage**: Automatically save your progress
+  - Persists across page refreshes
+  - Resets daily word count at the start of a new day
+- **Backup Functionality**: Manually download your word count data
 - **Responsive Design**: Works on desktop and mobile
 
 ## 🚀 Technologies
@@ -53,6 +55,7 @@ npm run dev
 2. Click "Count Words" to track your progress
 3. Set a word count goal
 4. Monitor your daily and total word count
+5. Use the "Download Backup" button to save your progress manually
 
 ## Running the Application
 
