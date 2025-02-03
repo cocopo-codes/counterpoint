@@ -17,9 +17,9 @@ body {
 }
 
 #app {
-  width: 50%;
-  max-width: 50%;
-  min-width: 50%;
+  width: 63%; /* Approximately 18.5% padding on each side */
+  max-width: 63%;
+  min-width: 63%;
   margin: 0;
   padding: 2rem;
   box-sizing: border-box;
@@ -61,18 +61,18 @@ a,
     align-items: center;
     grid-template-columns: 1fr 1fr;
     padding: 0 2rem;
-    width: 50%;
-    max-width: 50%;
-    min-width: 50%;
+    width: 63%;
+    max-width: 63%;
+    min-width: 63%;
     box-sizing: border-box;
   }
 }
 
 @media (min-width: 1920px) {
   #app {
-    width: 50%;
-    max-width: 50%;
-    min-width: 50%;
+    width: 63%;
+    max-width: 63%;
+    min-width: 63%;
     padding: 0 4rem;
     box-sizing: border-box;
   }
